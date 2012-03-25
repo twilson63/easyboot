@@ -74,7 +74,7 @@ module.exports = (dir='.', callback) ->
   bs = fs.createWriteStream destFile
   # when file is completely written to fs then extract contents
   bs.on 'close', -> 
-    log "Downloaded #{destFile}"
+    log "downloaded -> #{destFile}"
     # extract
     try
       fs.mkdirSync "#{dir}/#{assetDir}" for assetDir in ['css','js','img']
@@ -84,7 +84,7 @@ module.exports = (dir='.', callback) ->
         xtract zf, "bootstrap/#{item.dir}/#{item.name}", "#{dir}/#{item.dir}/#{item.name}"
 
       fs.unlinkSync(destFile)
-      log "Removed #{destFile}"
+      log "removed -> #{destFile}"
     catch err
       console.log "error occurred: #{err}"
     callback null, 'done'

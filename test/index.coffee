@@ -8,5 +8,6 @@ describe 'easyboot', ->
       easyboot './foo', (err, result) ->
         fs.statSync('./foo/css').should.be.ok
         fs.statSync('./foo/js').should.be.ok
+        ( -> fs.statSync('/tmp/bootstrap.zip')).should.throw()
         wrench.rmdirSyncRecursive('./foo', true)
         done()
