@@ -2,7 +2,7 @@
   "author": "Tom Wilson <tom@jackhq.com>",
   "name": "easyboot",
   "description": "pulls down and unzips the latest bootstrap",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "repository": {
     "url": ""
   },
@@ -16,6 +16,9 @@
     "request": "*",
     "zipfile": "*"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "mocha": "*",
+    "should": "*"
+  },
   "optionalDependencies": {}
 }
