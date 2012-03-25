@@ -86,7 +86,8 @@ module.exports = (dir='.', callback) ->
       fs.unlinkSync(destFile)
       log "removed -> #{destFile}"
     catch err
-      console.log "error occurred: #{err}"
+      log "error -> #{err}"
+      return callback new Error(err)
     callback null, 'done'
 
   # get zip file and pipe it to the local filesystem

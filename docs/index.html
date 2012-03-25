@@ -1,0 +1,78 @@
+<!DOCTYPE html>  <html> <head>   <title>index.coffee</title>   <meta http-equiv="content-type" content="text/html; charset=UTF-8">   <link rel="stylesheet" media="all" href="docco.css" /> </head> <body>   <div id="container">     <div id="background"></div>          <table cellpadding="0" cellspacing="0">       <thead>         <tr>           <th class="docs">             <h1>               index.coffee             </h1>           </th>           <th class="code">           </th>         </tr>       </thead>       <tbody>                               <tr id="section-1">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-1">&#182;</a>               </div>                            </td>             <td class="code">               <div class="highlight"><pre><span class="nv">request = </span><span class="nx">require</span> <span class="s1">&#39;request&#39;</span>
+<span class="nv">fs = </span><span class="nx">require</span> <span class="s1">&#39;fs&#39;</span>
+<span class="nv">zipfile = </span><span class="nx">require</span> <span class="s1">&#39;zipfile&#39;</span>
+<span class="nv">sourceUrl = </span><span class="s1">&#39;https://github.com/twitter/bootstrap/raw/master/docs/assets/bootstrap.zip&#39;</span>
+<span class="nv">destFile = </span><span class="s1">&#39;/tmp/bootstrap.zip&#39;</span></pre></div>             </td>           </tr>                               <tr id="section-2">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-2">&#182;</a>               </div>               <p>log(msg)</p>
+
+<p>writes timestamped message to stdout if env var DEBUG is set to true</p>
+
+<p>private</p>
+
+<pre><code>Parameter    |  Type   |  Required   |  Description
+-------------|---------|-------------|------------------
+msg          | string  | Required    | write msg to stdout
+</code></pre>
+
+<p>usage</p>
+
+<p>log 'downloaded file'</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="nv">log = </span><span class="nf">(msg) -&gt;</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="s2">&quot;#{(new Date()).toString()} - #{msg}&quot;</span> <span class="k">if</span> <span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">DEBUG</span> <span class="o">is</span> <span class="s1">&#39;true&#39;</span></pre></div>             </td>           </tr>                               <tr id="section-3">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-3">&#182;</a>               </div>               <h1>manifest</h1>
+
+<p>array of files to extract and where to extract them.</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="nv">manifest = </span><span class="p">[</span>
+  <span class="p">{</span> <span class="nv">dir: </span><span class="s1">&#39;css&#39;</span><span class="p">,</span> <span class="nv">name: </span><span class="s1">&#39;bootstrap.min.css&#39;</span> <span class="p">}</span>
+  <span class="p">{</span> <span class="nv">dir: </span><span class="s1">&#39;css&#39;</span><span class="p">,</span> <span class="nv">name: </span><span class="s1">&#39;bootstrap-responsive.min.css&#39;</span> <span class="p">}</span>
+  <span class="p">{</span> <span class="nv">dir: </span><span class="s1">&#39;js&#39;</span><span class="p">,</span> <span class="nv">name: </span><span class="s1">&#39;bootstrap.min.js&#39;</span> <span class="p">}</span>
+  <span class="p">{</span> <span class="nv">dir: </span><span class="s1">&#39;img&#39;</span><span class="p">,</span> <span class="nv">name: </span><span class="s1">&#39;glyphicons-halflings-white.png&#39;</span><span class="p">}</span>
+  <span class="p">{</span> <span class="nv">dir: </span><span class="s1">&#39;img&#39;</span><span class="p">,</span> <span class="nv">name: </span><span class="s1">&#39;glyphicons-halflings.png&#39;</span><span class="p">}</span>
+<span class="p">]</span></pre></div>             </td>           </tr>                               <tr id="section-4">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-4">&#182;</a>               </div>               <h1>easyboot(dir, callback)</h1>
+
+<p>command application to pull current bootstrap assets from 
+the cloud and deploy to your assets folder</p>
+
+<pre><code>Parameters    |  Type    |  Required   | Description
+--------------|----------|-------------|----------------------
+dir           | string   | optional    | the directory you want to extract to
+callback      | function | optional    | callback which will fire when completed
+</code></pre>
+
+<p>usage</p>
+
+<pre><code>easyboot = require 'easyboot'
+
+easyboot 'foo', (err, results) -&gt;
+  return console.log(err) if err?
+  console.log results
+</code></pre>             </td>             <td class="code">               <div class="highlight"><pre><span class="nv">module.exports = </span><span class="nf">(dir=&#39;.&#39;, callback) -&gt;</span></pre></div>             </td>           </tr>                               <tr id="section-5">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-5">&#182;</a>               </div>               <p>xtract(zfile, src, dest)</p>
+
+<p>extracts a file in the zip file to the local file system</p>
+
+<pre><code>Parameters     |  Type   | Required | Description
+---------------|---------|----------|-------------------
+zfile          | object  | Required | zipfile object
+src            | string  | Required | source of file in zipfile
+dest           | string  | Required | destination file on file system
+</code></pre>
+
+<p>usage</p>
+
+<pre><code>zf = new zipfile.ZipFile('foobar.zip')
+xtract zf, 'foo.txt', './foo.txt'
+</code></pre>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="nv">xtract = </span><span class="nf">(zfile, src, dest) -&gt;</span>
+    <span class="nv">wf = </span><span class="nx">fs</span><span class="p">.</span><span class="nx">createWriteStream</span><span class="p">(</span><span class="nx">dest</span><span class="p">)</span>
+    <span class="nx">wf</span><span class="p">.</span><span class="nx">write</span> <span class="nx">zfile</span><span class="p">.</span><span class="nx">readFileSync</span><span class="p">(</span><span class="nx">src</span><span class="p">)</span>
+    <span class="nx">wf</span><span class="p">.</span><span class="nx">end</span><span class="p">()</span>
+    <span class="nx">log</span> <span class="s2">&quot;extracted -&gt; #{src}&quot;</span></pre></div>             </td>           </tr>                               <tr id="section-6">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-6">&#182;</a>               </div>               <p>create file write stream that we can pipe the downloaded file to.</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="nv">bs = </span><span class="nx">fs</span><span class="p">.</span><span class="nx">createWriteStream</span> <span class="nx">destFile</span></pre></div>             </td>           </tr>                               <tr id="section-7">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-7">&#182;</a>               </div>               <p>when file is completely written to fs then extract contents</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="nx">bs</span><span class="p">.</span><span class="kc">on</span> <span class="s1">&#39;close&#39;</span><span class="p">,</span> <span class="o">-&gt;</span> 
+    <span class="nx">log</span> <span class="s2">&quot;downloaded -&gt; #{destFile}&quot;</span></pre></div>             </td>           </tr>                               <tr id="section-8">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-8">&#182;</a>               </div>               <p>extract</p>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="k">try</span>
+      <span class="nx">fs</span><span class="p">.</span><span class="nx">mkdirSync</span> <span class="s2">&quot;#{dir}/#{assetDir}&quot;</span> <span class="k">for</span> <span class="nx">assetDir</span> <span class="k">in</span> <span class="p">[</span><span class="s1">&#39;css&#39;</span><span class="p">,</span><span class="s1">&#39;js&#39;</span><span class="p">,</span><span class="s1">&#39;img&#39;</span><span class="p">]</span>
+      <span class="nv">zf = </span><span class="k">new</span> <span class="nx">zipfile</span><span class="p">.</span><span class="nx">ZipFile</span><span class="p">(</span><span class="nx">destFile</span><span class="p">)</span>
+
+      <span class="k">for</span> <span class="nx">item</span> <span class="k">in</span> <span class="nx">manifest</span>
+        <span class="nx">xtract</span> <span class="nx">zf</span><span class="p">,</span> <span class="s2">&quot;bootstrap/#{item.dir}/#{item.name}&quot;</span><span class="p">,</span> <span class="s2">&quot;#{dir}/#{item.dir}/#{item.name}&quot;</span>
+
+      <span class="nx">fs</span><span class="p">.</span><span class="nx">unlinkSync</span><span class="p">(</span><span class="nx">destFile</span><span class="p">)</span>
+      <span class="nx">log</span> <span class="s2">&quot;removed -&gt; #{destFile}&quot;</span>
+    <span class="k">catch</span> <span class="nx">err</span>
+      <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="s2">&quot;error occurred: #{err}&quot;</span>
+    <span class="nx">callback</span> <span class="kc">null</span><span class="p">,</span> <span class="s1">&#39;done&#39;</span></pre></div>             </td>           </tr>                               <tr id="section-9">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-9">&#182;</a>               </div>               <p>get zip file and pipe it to the local filesystem</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="nx">request</span><span class="p">(</span><span class="nx">sourceUrl</span><span class="p">).</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">bs</span><span class="p">)</span>
+
+</pre></div>             </td>           </tr>                </tbody>     </table>   </div> </body> </html> 
