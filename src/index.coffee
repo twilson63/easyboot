@@ -2,7 +2,27 @@ request = require 'request'
 fs = require 'fs'
 zipfile = require 'zipfile'
 sourceUrl = 'https://github.com/twitter/bootstrap/raw/master/docs/assets/bootstrap.zip'
+destFile = '/tmp/bootstrap.zip'
 
+# log(msg)
+#
+# writes timestamped message to stdout if env var DEBUG is set to true
+#
+# private
+#
+#     Parameter    |  Type   |  Required   |  Description
+#     -------------|---------|-------------|------------------
+#     msg          | string  | Required    | write msg to stdout
+#
+# usage
+#
+#    log 'downloaded file'
+log = (msg) ->
+  console.log "#{(new Date()).toString()} - #{msg}" if process.env.DEBUG is 'true'
+
+# # manifest
+#
+# array of files to extract and where to extract them.
 manifest = [
   { dir: 'css', name: 'bootstrap.min.css' }
   { dir: 'css', name: 'bootstrap-responsive.min.css' }
@@ -48,25 +68,26 @@ module.exports = (dir='.', callback) ->
     wf = fs.createWriteStream(dest)
     wf.write zfile.readFileSync(src)
     wf.end()
+    log "extracted -> #{src}"
 
   # create file write stream that we can pipe the downloaded file to.
-  bs = fs.createWriteStream('bootstrap.zip')
+  bs = fs.createWriteStream destFile
   # when file is completely written to fs then extract contents
   bs.on 'close', -> 
-    console.log 'Downloaded ZipFile'
+    log "Downloaded #{destFile}"
     # extract
     try
-      fs.mkdirSync directory for directory in ['css','js','img']
-      zf = new zipfile.ZipFile('./bootstrap.zip')
+      fs.mkdirSync "#{dir}/#{assetDir}" for assetDir in ['css','js','img']
+      zf = new zipfile.ZipFile(destFile)
 
       for item in manifest
         xtract zf, "bootstrap/#{item.dir}/#{item.name}", "#{dir}/#{item.dir}/#{item.name}"
 
-      console.log 'Extracted Contents'
-      fs.unlinkSync('./bootstrap.zip')
-      console.log 'Removed ZipFile'
+      fs.unlinkSync(destFile)
+      log "Removed #{destFile}"
     catch err
       console.log "error occurred: #{err}"
+    callback null, 'done'
 
   # get zip file and pipe it to the local filesystem
   request(sourceUrl).pipe(bs)
