@@ -1,5 +1,7 @@
 # easyboot
 
+[![build status](https://secure.travis-ci.org/twilson63/easyboot.png)](http://travis-ci.org/twilson63/easyboot)
+
 A command line app that pulls the latest version of twitter bootstrap
 and extracts the production files into a css, js, img folder.
 
