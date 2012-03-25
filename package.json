@@ -1,0 +1,21 @@
+{
+  "author": "Tom Wilson <tom@jackhq.com>",
+  "name": "easyboot",
+  "description": "pulls down and unzips the latest bootstrap",
+  "version": "0.0.1",
+  "repository": {
+    "url": ""
+  },
+  "bin": {
+    "easyboot": "./bin/easyboot"
+  },
+  "engines": {
+    "node": "0.6 || 0.7"
+  },
+  "dependencies": {
+    "request": "*",
+    "zipfile": "*"
+  },
+  "devDependencies": {},
+  "optionalDependencies": {}
+}
