@@ -2,7 +2,7 @@
   "author": "Tom Wilson <tom@jackhq.com>",
   "name": "easyboot",
   "description": "pulls down and unzips the latest bootstrap",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "repository": {
     "url": "https://github.com/twilson63/easyboot.git"
   },
@@ -10,7 +10,7 @@
     "easyboot": "./bin/easyboot"
   },
   "engines": {
-    "node": "0.6 || 0.7"
+    "node": "~0.6.17"
   },
   "dependencies": {
     "request": "2.9.153",

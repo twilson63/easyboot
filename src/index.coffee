@@ -1,7 +1,7 @@
 request = require 'request'
 fs = require 'fs'
 zipfile = require 'zipfile'
-sourceUrl = 'https://github.com/twitter/bootstrap/raw/master/docs/assets/bootstrap.zip'
+sourceUrl = 'https://s3.amazonaws.com/jackhq/bootstrap.zip'
 destFile = '/tmp/bootstrap.zip'
 
 # log(msg)
@@ -65,6 +65,11 @@ module.exports = (dir='.', callback) ->
   #     zf = new zipfile.ZipFile('foobar.zip')
   #     xtract zf, 'foo.txt', './foo.txt'
   xtract = (zfile, src, dest) ->
+    try 
+      foo = zfile.readFileSync(src)
+    catch err
+      console.log err.message
+      
     wf = fs.createWriteStream(dest)
     wf.write zfile.readFileSync(src)
     wf.end()
@@ -79,9 +84,10 @@ module.exports = (dir='.', callback) ->
     try
       fs.mkdirSync "#{dir}/#{assetDir}" for assetDir in ['css','js','img']
       zf = new zipfile.ZipFile(destFile)
-
+      
+      console.log zf
       for item in manifest
-        xtract zf, "bootstrap/#{item.dir}/#{item.name}", "#{dir}/#{item.dir}/#{item.name}"
+        xtract zf, "#{item.dir}/#{item.name}", "#{dir}/#{item.dir}/#{item.name}"
 
       fs.unlinkSync(destFile)
       log "removed -> #{destFile}"
